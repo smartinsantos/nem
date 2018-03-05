@@ -1,16 +1,12 @@
 
-import path from 'path'
 import express from 'express'
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
+import router from './router'
 import db from './db'
 
-// defining the main router of the app
-// const router = require('./routes/apiRouter.js')
-
-// We're in development or production mode
-// create and run a real server.
+// create and run the server
 const app = express()
 // Use morgan to log requests to our express server to the console
 app.use(morgan('dev'))
@@ -20,10 +16,10 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 
 // API router
-// app.use('/api', router)
+app.use('/', router)
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../index.html'))
+  res.status(404).json({ error: true, message: 'Not Found!' })
 })
 
 // Start the server!
@@ -34,7 +30,7 @@ app.listen(port, (err) => {
     console.error('error connecting: ' + err)
     return
   }
-  console.log(`ˁᵒ͡ˑ̉ᵒˀ Server Started, listening @port: ${port}`)
+  console.log(`ˁᵒ͡ˑ̉ᵒˀ Server Started, listening @port: ${port}!`)
 })
 
 db.connect((err) => {
@@ -42,5 +38,5 @@ db.connect((err) => {
     console.error(`DB Connection Error: ${err.stack}`)
     return
   }
-  console.log(`ˁᵒ͡ˑ̉ᵒˀ DB Connected: ${db.threadId}`)
+  console.log(`ˁᵒ͡ˑ̉ᵒˀ DB Connected!`)
 })
